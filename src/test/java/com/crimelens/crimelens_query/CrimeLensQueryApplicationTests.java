@@ -1,13 +1,11 @@
-package com.crimelens.crimelens_crud;
+package com.crimelens.crimelens_query;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CrimeLensCrudApplicationTests {
+class CrimeLensQueryApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-
+  @Test
+  void contextLoads() {}
 }
