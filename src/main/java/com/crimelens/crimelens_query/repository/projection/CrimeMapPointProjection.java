@@ -1,14 +1,6 @@
 package com.crimelens.crimelens_query.repository.projection;
 
-import java.time.LocalDateTime;
-import org.locationtech.jts.geom.Point;
+import java.time.LocalDate;
 
-public interface CrimeMapPointProjection {
-  Long getId();
-
-  String getOffenceCategory();
-
-  LocalDateTime getOccurredDate();
-
-  Point getLocation();
-}
+public record CrimeMapPointProjection(
+    Long id, String offenceCategory, LocalDate occurredDate, double lon, double lat) {}

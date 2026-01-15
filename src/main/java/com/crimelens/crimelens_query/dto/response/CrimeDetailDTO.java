@@ -1,8 +1,7 @@
-package com.crimelens.crimelens_query.dto;
+package com.crimelens.crimelens_query.dto.response;
 
 import com.crimelens.crimelens_query.enums.CrimeSource;
-
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record CrimeDetailDTO(
     Long id,
@@ -11,7 +10,8 @@ public record CrimeDetailDTO(
     String offenceCategory,
     String neighbourhood,
     String intersection,
-    LocalDateTime occurredDate,
-    LocalDateTime reportedDate,
-    CrimeSource source
-) {}
+    LocalDate occurredDate,
+    Integer occurredHour,
+    LocalDate reportedDate,
+    Integer reportedHour,
+    CrimeSource source) {}

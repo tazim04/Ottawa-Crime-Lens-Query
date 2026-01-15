@@ -1,29 +1,27 @@
 package com.crimelens.crimelens_query.repository.projection;
 
+import java.time.LocalDate;
 import org.locationtech.jts.geom.Geometry;
 
-import java.time.LocalDateTime;
-
-public interface GridStatProjection {
+public record GridStatProjection(
+    Long id,
 
     // Geometry of the grid cell
-    Geometry getGrid();
+    Geometry grid,
 
     // Counts
-    Long getTotalCrimes();
-    Double getAvgCrimesPerYear();
-
-    Long getCrimesLastYear();
-    Long getCrimesLast5Years();
-    Long getCrimesLast10Years();
+    Long totalCrimes,
+    Double avgCrimesPerYear,
+    Long crimesLastYear,
+    Long crimesLast5Years,
+    Long crimesLast10Years,
 
     // Modes
-    String getMostCommonCrimeAllTime();
-    String getMostCommonCrimeLastYear();
-    String getMostCommonCrimeLast5Years();
-    String getMostCommonCrimeLast10Years();
+    String mostCommonCrimeAllTime,
+    String mostCommonCrimeLastYear,
+    String mostCommonCrimeLast5Years,
+    String mostCommonCrimeLast10Years,
 
     // Metadata
-    LocalDateTime getFirstReported();
-    LocalDateTime getLastReported();
-}
+    LocalDate firstReported,
+    LocalDate lastReported) {}
