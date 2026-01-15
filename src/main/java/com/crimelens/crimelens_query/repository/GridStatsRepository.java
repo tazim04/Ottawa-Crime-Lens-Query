@@ -18,7 +18,6 @@ public class GridStatsRepository {
       (rs, rowNum) ->
           new GridStatProjection(
               rs.getLong("id"),
-              (Geometry) rs.getObject("grid"),
               rs.getLong("total_crimes"),
               rs.getDouble("avg_crimes_per_year"),
               rs.getLong("crimes_last_year"),
@@ -37,7 +36,6 @@ public class GridStatsRepository {
         """
             SELECT
                 id,
-                grid,
                 total_crimes,
                 avg_crimes_per_year,
                 crimes_last_year,

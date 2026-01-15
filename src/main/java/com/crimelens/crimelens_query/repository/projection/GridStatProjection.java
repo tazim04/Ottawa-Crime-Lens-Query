@@ -6,9 +6,6 @@ import org.locationtech.jts.geom.Geometry;
 public record GridStatProjection(
     Long id,
 
-    // Geometry of the grid cell
-    Geometry grid,
-
     // Counts
     Long totalCrimes,
     Double avgCrimesPerYear,
