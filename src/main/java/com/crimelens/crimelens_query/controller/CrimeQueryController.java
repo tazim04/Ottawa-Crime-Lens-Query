@@ -1,6 +1,6 @@
 package com.crimelens.crimelens_query.controller;
 
-import com.crimelens.crimelens_query.dto.request.MapCrimeRequest;
+import com.crimelens.crimelens_query.dto.request.CrimeMapPointRequest;
 import com.crimelens.crimelens_query.dto.response.CrimeDetailDTO;
 import com.crimelens.crimelens_query.dto.response.CrimeMapPointDTO;
 import com.crimelens.crimelens_query.service.CrimeQueryService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/crime-query")
+@RequestMapping("/api/crime-query")
 @RequiredArgsConstructor
 @Slf4j
 public class CrimeQueryController {
@@ -21,16 +21,9 @@ public class CrimeQueryController {
   private final CrimeQueryService service;
 
   @GetMapping("/map-points")
-  public List<CrimeMapPointDTO> getCrimeMapPoints(@Valid MapCrimeRequest request) {
+  public List<CrimeMapPointDTO> getCrimeMapPoints(@Valid CrimeMapPointRequest request) {
     log.info("Running /map-points!");
-    return service.getCrimeMapPoints(
-        request.minLat(),
-        request.minLon(),
-        request.maxLat(),
-        request.maxLon(),
-        request.zoom(),
-        request.startDate(),
-        request.endDate());
+    return service.getCrimeMapPoints(request);
   }
 
   @GetMapping("/crime-details")

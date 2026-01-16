@@ -1,9 +1,10 @@
 package com.crimelens.crimelens_query.repository;
 
+import com.crimelens.crimelens_query.repository.projection.GridCellMapProjection;
 import com.crimelens.crimelens_query.repository.projection.GridStatProjection;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.geom.Geometry;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -30,8 +31,12 @@ public class GridStatsRepository {
               rs.getDate("first_reported").toLocalDate(),
               rs.getDate("last_reported").toLocalDate());
 
-  public Optional<GridStatProjection> getGridStatsForPoint(double lon, double lat) {
+  private static final RowMapper<GridCellMapProjection> GRID_CELL_MAP_ROW_MAPPER =
+      (rs, rowNum) ->
+          new GridCellMapProjection(
+              rs.getDouble("lon"), rs.getDouble("lat"), rs.getLong("total_crimes"));
 
+  public Optional<GridStatProjection> getGridStatsForPoint(double lon, double lat) {
     String sql =
         """
             SELECT
@@ -56,5 +61,20 @@ public class GridStatsRepository {
             """;
 
     return jdbc.query(sql, GRID_STAT_MAPPER, lon, lat).stream().findFirst();
+  }
+
+  public List<GridCellMapProjection> findGridCellsForViewport(
+      double minLon, double minLat, double maxLon, double maxLat) {
+    String sql =
+        """
+      SELECT
+          ST_X(grid) AS lon,
+          ST_Y(grid) AS lat,
+          total_crimes
+      FROM crime_stats_grid
+      WHERE grid && ST_MakeEnvelope(?, ?, ?, ?, 4326)
+      """;
+
+    return jdbc.query(sql, GRID_CELL_MAP_ROW_MAPPER, minLon, minLat, maxLon, maxLat);
   }
 }

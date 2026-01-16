@@ -1,7 +1,6 @@
 package com.crimelens.crimelens_query.repository.projection;
 
 import java.time.LocalDate;
-import org.locationtech.jts.geom.Geometry;
 
 public record GridStatProjection(
     Long id,

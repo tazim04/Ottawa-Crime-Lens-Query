@@ -1,8 +1,11 @@
 package com.crimelens.crimelens_query.service;
 
+import com.crimelens.crimelens_query.dto.response.GridCellDTO;
 import com.crimelens.crimelens_query.dto.response.GridStatDTO;
 import com.crimelens.crimelens_query.repository.GridStatsRepository;
+import com.crimelens.crimelens_query.repository.projection.GridCellMapProjection;
 import com.crimelens.crimelens_query.repository.projection.GridStatProjection;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,16 +16,16 @@ public class GridStatsService {
 
   private final GridStatsRepository gridStatsRepository;
 
-  //  public List<GridStatDTO> getGridStats(
-  //      double minLng, double minLat, double maxLng, double maxLat) {
-  //    return gridStatsRepository.findGridStatsInBoundingBox(minLng, minLat, maxLng,
-  // maxLat).stream()
-  //        .map(this::toDto)
-  //        .toList();
-  //  }
-
   public Optional<GridStatDTO> getGridStatsForPoint(double lon, double lat) {
     return gridStatsRepository.getGridStatsForPoint(lon, lat).map(this::toDto);
+  }
+
+  public List<GridCellDTO> getGridCellsForViewport(
+      double minLon, double minLat, double maxLon, double maxLat, int zoom) {
+
+    return gridStatsRepository.findGridCellsForViewport(minLon, minLat, maxLon, maxLat).stream()
+        .map(p -> new GridCellDTO(p.lon(), p.lat(), p.crimeCount()))
+        .toList();
   }
 
   private GridStatDTO toDto(GridStatProjection projection) {
@@ -40,5 +43,9 @@ public class GridStatsService {
         projection.firstReported(),
         projection.lastReported(),
         false);
+  }
+
+  private GridCellDTO toDto(GridCellMapProjection projection) {
+    return new GridCellDTO(projection.lon(), projection.lat(), projection.crimeCount());
   }
 }

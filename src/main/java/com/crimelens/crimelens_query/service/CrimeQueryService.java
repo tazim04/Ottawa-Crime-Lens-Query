@@ -1,11 +1,11 @@
 package com.crimelens.crimelens_query.service;
 
+import com.crimelens.crimelens_query.dto.request.CrimeMapPointRequest;
 import com.crimelens.crimelens_query.dto.response.CrimeDetailDTO;
 import com.crimelens.crimelens_query.dto.response.CrimeMapPointDTO;
 import com.crimelens.crimelens_query.repository.CrimeQueryRepository;
 import com.crimelens.crimelens_query.repository.projection.CrimeDetailProjection;
 import com.crimelens.crimelens_query.repository.projection.CrimeMapPointProjection;
-import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,23 +18,11 @@ public class CrimeQueryService {
   private final ZoomPolicyService zoomPolicyService;
 
   // Return crime markers for map viewport
-  public List<CrimeMapPointDTO> getCrimeMapPoints(
-      double minLat,
-      double minLon,
-      double maxLat,
-      double maxLon,
-      int zoom,
-      LocalDate startDate,
-      LocalDate endDate) {
-
-    //    zoomPolicyService.assertCrimePointsAllowed(zoom); // assert we can display crime points
-    // safely
-    int limit =
-        zoomPolicyService.maxCrimePoints(zoom); // get hard cap on number of crime points to display
+  public List<CrimeMapPointDTO> getCrimeMapPoints(CrimeMapPointRequest r) {
 
     // query db and return results
     return crimeQueryRepository
-        .findMapPoints(minLon, minLat, maxLon, maxLat, startDate, endDate, limit)
+        .findMapPoints(r.minLon(), r.minLat(), r.maxLon(), r.maxLat(), r.startDate(), r.endDate())
         .stream()
         .map(this::toMapPointDto)
         .toList();

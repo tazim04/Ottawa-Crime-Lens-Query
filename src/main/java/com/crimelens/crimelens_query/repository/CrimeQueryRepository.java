@@ -22,7 +22,7 @@ public class CrimeQueryRepository {
           new CrimeMapPointProjection(
               rs.getLong("id"),
               rs.getString("offenceCategory"),
-              rs.getDate("occurredDate").toLocalDate(),
+              rs.getDate("reportedDate").toLocalDate(),
               rs.getDouble("lon"),
               rs.getDouble("lat"));
 
@@ -31,24 +31,48 @@ public class CrimeQueryRepository {
       double minLat,
       double maxLon,
       double maxLat,
-      LocalDate start,
-      LocalDate end,
-      int limit) {
+      LocalDate startDate,
+      LocalDate endDate) {
+
+    //    String sql =
+    //        """
+    //    SELECT id,
+    //           offence_category AS offenceCategory,
+    //           reported_date AS reportedDate,
+    //           ST_X(location) AS lon,
+    //           ST_Y(location) AS lat
+    //    FROM crime_records
+    //    WHERE location && ST_MakeEnvelope(?, ?, ?, ?, 4326)
+    //      AND (CAST(? AS date) IS NULL OR reported_date >= CAST(? AS date))
+    //      AND (CAST(? AS date) IS NULL OR reported_date <= CAST(? AS date))
+    //    ORDER BY ST_Distance(location, ST_SetSRID(ST_POINT(?, ?), 4326))
+    //    LIMIT ?
+    //  """;
 
     String sql =
         """
-    SELECT id,
-           offence_category AS offenceCategory,
-           occurred_date AS occurredDate,
-           ST_X(location) AS lon,
-           ST_Y(location) AS lat
-    FROM crime_records
-    WHERE location && ST_MakeEnvelope(?, ?, ?, ?, 4326)
-      AND reported_date BETWEEN ? AND ?
-    LIMIT ?
-  """;
+          SELECT id,
+                 offence_category AS offenceCategory,
+                 reported_date AS reportedDate,
+                 ST_X(location) AS lon,
+                 ST_Y(location) AS lat
+          FROM crime_records
+          WHERE location && ST_MakeEnvelope(?, ?, ?, ?, 4326)
+            AND (CAST(? AS date) IS NULL OR reported_date >= CAST(? AS date))
+            AND (CAST(? AS date) IS NULL OR reported_date <= CAST(? AS date))
+        """;
 
-    return jdbc.query(sql, MAP_POINT_MAPPER, minLon, minLat, maxLon, maxLat, start, end, limit);
+    return jdbc.query(
+        sql,
+        MAP_POINT_MAPPER,
+        minLon,
+        minLat,
+        maxLon,
+        maxLat,
+        startDate,
+        startDate,
+        endDate,
+        endDate);
   }
 
   public Optional<CrimeDetailProjection> findCrimeDetail(Long id) {

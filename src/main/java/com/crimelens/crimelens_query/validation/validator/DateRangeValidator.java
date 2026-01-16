@@ -1,14 +1,15 @@
 package com.crimelens.crimelens_query.validation.validator;
 
-import com.crimelens.crimelens_query.dto.request.MapCrimeRequest;
+import com.crimelens.crimelens_query.dto.request.CrimeMapPointRequest;
 import com.crimelens.crimelens_query.validation.annotation.ValidDateRange;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class DateRangeValidator implements ConstraintValidator<ValidDateRange, MapCrimeRequest> {
+public class DateRangeValidator
+    implements ConstraintValidator<ValidDateRange, CrimeMapPointRequest> {
 
   @Override
-  public boolean isValid(MapCrimeRequest r, ConstraintValidatorContext ctx) {
+  public boolean isValid(CrimeMapPointRequest r, ConstraintValidatorContext ctx) {
     if (r.startDate() == null || r.endDate() == null) {
       return true;
     }

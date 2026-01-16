@@ -9,7 +9,7 @@ import java.time.LocalDate;
 // Used for when frontend map needs to load crime points
 @ValidBoundingBox
 @ValidDateRange
-public record MapCrimeRequest(
+public record CrimeMapPointRequest(
     @NotNull double minLon,
     @NotNull double minLat,
     @NotNull double maxLon,
