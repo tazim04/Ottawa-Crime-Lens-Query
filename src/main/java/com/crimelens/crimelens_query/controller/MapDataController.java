@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/map")
 @RequiredArgsConstructor
 @Slf4j
-public class MapQueryController {
+public class MapDataController {
   private final MapQueryService mapQueryService;
 
   @GetMapping("/data")

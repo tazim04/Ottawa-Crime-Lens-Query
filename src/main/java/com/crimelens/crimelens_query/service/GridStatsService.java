@@ -8,6 +8,7 @@ import com.crimelens.crimelens_query.repository.projection.GridStatProjection;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +21,7 @@ public class GridStatsService {
     return gridStatsRepository.getGridStatsForPoint(lon, lat).map(this::toDto);
   }
 
+  @Cacheable(value = "gridViewport", key = "'grid:' + #zoom")
   public List<GridCellDTO> getGridCellsForViewport(
       double minLon, double minLat, double maxLon, double maxLat, int zoom) {
 
