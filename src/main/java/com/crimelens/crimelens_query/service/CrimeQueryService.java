@@ -8,7 +8,6 @@ import com.crimelens.crimelens_query.repository.projection.CrimeDetailProjection
 import com.crimelens.crimelens_query.repository.projection.CrimeMapPointProjection;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service

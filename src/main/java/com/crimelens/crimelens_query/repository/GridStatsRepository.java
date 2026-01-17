@@ -34,7 +34,10 @@ public class GridStatsRepository {
   private static final RowMapper<GridCellMapProjection> GRID_CELL_MAP_ROW_MAPPER =
       (rs, rowNum) ->
           new GridCellMapProjection(
-              rs.getDouble("lon"), rs.getDouble("lat"), rs.getLong("total_crimes"));
+              rs.getLong("id"),
+              rs.getDouble("lon"),
+              rs.getDouble("lat"),
+              rs.getLong("total_crimes"));
 
   public Optional<GridStatProjection> getGridStatsForPoint(double lon, double lat) {
     String sql =
@@ -68,6 +71,7 @@ public class GridStatsRepository {
     String sql =
         """
       SELECT
+          id,
           ST_X(grid) AS lon,
           ST_Y(grid) AS lat,
           total_crimes

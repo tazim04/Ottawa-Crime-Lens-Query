@@ -26,7 +26,7 @@ public class GridStatsService {
       double minLon, double minLat, double maxLon, double maxLat, int zoom) {
 
     return gridStatsRepository.findGridCellsForViewport(minLon, minLat, maxLon, maxLat).stream()
-        .map(p -> new GridCellDTO(p.lon(), p.lat(), p.crimeCount()))
+        .map(p -> new GridCellDTO(p.id(), p.lon(), p.lat(), p.crimeCount()))
         .toList();
   }
 
@@ -48,6 +48,7 @@ public class GridStatsService {
   }
 
   private GridCellDTO toDto(GridCellMapProjection projection) {
-    return new GridCellDTO(projection.lon(), projection.lat(), projection.crimeCount());
+    return new GridCellDTO(
+        projection.id(), projection.lon(), projection.lat(), projection.crimeCount());
   }
 }
