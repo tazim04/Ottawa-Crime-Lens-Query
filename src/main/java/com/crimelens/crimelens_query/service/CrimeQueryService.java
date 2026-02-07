@@ -20,9 +20,12 @@ public class CrimeQueryService {
   // Return crime markers for map viewport
   public List<CrimeMapPointDTO> getCrimeMapPoints(CrimeMapPointRequest r) {
 
+    String category = r.offenceCategory() != null ? r.offenceCategory().getDisplayName() : null;
+
     // query db and return results
     return crimeQueryRepository
-        .findMapPoints(r.minLon(), r.minLat(), r.maxLon(), r.maxLat(), r.startDate(), r.endDate())
+        .findMapPoints(
+            r.minLon(), r.minLat(), r.maxLon(), r.maxLat(), r.startDate(), r.endDate(), category)
         .stream()
         .map(this::toMapPointDto)
         .toList();

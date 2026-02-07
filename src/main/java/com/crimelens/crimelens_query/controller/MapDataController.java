@@ -1,6 +1,7 @@
 package com.crimelens.crimelens_query.controller;
 
 import com.crimelens.crimelens_query.dto.response.MapDataResponse;
+import com.crimelens.crimelens_query.enums.OffenceCategory;
 import com.crimelens.crimelens_query.service.MapQueryService;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,12 @@ public class MapDataController {
       @RequestParam double maxLat,
       @RequestParam int zoom,
       @RequestParam(required = false) LocalDate startDate,
-      @RequestParam(required = false) LocalDate endDate) {
-    return mapQueryService.getMapData(minLon, minLat, maxLon, maxLat, startDate, endDate, zoom);
+      @RequestParam(required = false) LocalDate endDate,
+      @RequestParam(required = false) String category) {
+
+    OffenceCategory offenceCategory =
+        category != null ? OffenceCategory.fromString(category) : null;
+    return mapQueryService.getMapData(
+        minLon, minLat, maxLon, maxLat, startDate, endDate, offenceCategory, zoom);
   }
 }

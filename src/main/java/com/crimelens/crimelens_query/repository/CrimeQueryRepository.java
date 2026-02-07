@@ -32,22 +32,8 @@ public class CrimeQueryRepository {
       double maxLon,
       double maxLat,
       LocalDate startDate,
-      LocalDate endDate) {
-
-    //    String sql =
-    //        """
-    //    SELECT id,
-    //           offence_category AS offenceCategory,
-    //           reported_date AS reportedDate,
-    //           ST_X(location) AS lon,
-    //           ST_Y(location) AS lat
-    //    FROM crime_records
-    //    WHERE location && ST_MakeEnvelope(?, ?, ?, ?, 4326)
-    //      AND (CAST(? AS date) IS NULL OR reported_date >= CAST(? AS date))
-    //      AND (CAST(? AS date) IS NULL OR reported_date <= CAST(? AS date))
-    //    ORDER BY ST_Distance(location, ST_SetSRID(ST_POINT(?, ?), 4326))
-    //    LIMIT ?
-    //  """;
+      LocalDate endDate,
+      String offenceCategory) {
 
     String sql =
         """
@@ -60,7 +46,8 @@ public class CrimeQueryRepository {
           WHERE location && ST_MakeEnvelope(?, ?, ?, ?, 4326)
             AND (CAST(? AS date) IS NULL OR reported_date >= CAST(? AS date))
             AND (CAST(? AS date) IS NULL OR reported_date <= CAST(? AS date))
-        """;
+            AND (CAST(? AS text) IS NULL OR offence_category = CAST(? AS text))
+          """;
 
     return jdbc.query(
         sql,
@@ -72,7 +59,9 @@ public class CrimeQueryRepository {
         startDate,
         startDate,
         endDate,
-        endDate);
+        endDate,
+        offenceCategory,
+        offenceCategory);
   }
 
   public Optional<CrimeDetailProjection> findCrimeDetail(Long id) {

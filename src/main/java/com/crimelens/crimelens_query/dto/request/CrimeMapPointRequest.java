@@ -1,5 +1,6 @@
 package com.crimelens.crimelens_query.dto.request;
 
+import com.crimelens.crimelens_query.enums.OffenceCategory;
 import com.crimelens.crimelens_query.validation.annotation.ValidBoundingBox;
 import com.crimelens.crimelens_query.validation.annotation.ValidDateRange;
 import jakarta.validation.constraints.Min;
@@ -16,4 +17,5 @@ public record CrimeMapPointRequest(
     @NotNull double maxLat,
     @Min(0) int zoom,
     LocalDate startDate,
-    LocalDate endDate) {}
+    LocalDate endDate,
+    OffenceCategory offenceCategory) {}

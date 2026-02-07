@@ -16,7 +16,7 @@ public record GridStatDTO(
     LocalDate firstReported,
     LocalDate lastReported,
     boolean empty) {
-  public static GridStatDTO empty(double lon, double lat) {
-    return new GridStatDTO(-1, 0, 0.0, 0, 0, 0, null, null, null, null, null, null, true);
-  }
+
+  public static final GridStatDTO EMPTY =
+      new GridStatDTO(-1, 0, 0.0, 0, 0, 0, null, null, null, null, null, null, true);
 }

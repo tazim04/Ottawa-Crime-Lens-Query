@@ -81,4 +81,28 @@ public class GridStatsRepository {
 
     return jdbc.query(sql, GRID_CELL_MAP_ROW_MAPPER, minLon, minLat, maxLon, maxLat);
   }
+
+  public Optional<GridStatProjection> getGridStatsById(long id) {
+    String sql =
+        """
+                SELECT
+                    id,
+                    total_crimes,
+                    avg_crimes_per_year,
+                    crimes_last_year,
+                    crimes_last_5_years,
+                    crimes_last_10_years,
+                    most_common_crime_all_time,
+                    most_common_crime_last_year,
+                    most_common_crime_last_5_years,
+                    most_common_crime_last_10_years,
+                    first_reported,
+                    last_reported
+                FROM crime_stats_grid
+                WHERE id = ?
+                LIMIT 1
+                """;
+
+    return jdbc.query(sql, GRID_STAT_MAPPER, id).stream().findFirst();
+  }
 }

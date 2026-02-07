@@ -2,6 +2,7 @@ package com.crimelens.crimelens_query.service;
 
 import com.crimelens.crimelens_query.dto.request.CrimeMapPointRequest;
 import com.crimelens.crimelens_query.dto.response.MapDataResponse;
+import com.crimelens.crimelens_query.enums.OffenceCategory;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ public class MapQueryService {
       double maxLat,
       LocalDate startDate,
       LocalDate endDate,
+      OffenceCategory offenceCategory,
       int zoom) {
 
     if (zoomPolicyService.usePrecomputedGrid(zoom)) {
@@ -34,6 +36,7 @@ public class MapQueryService {
     log.info("Returning crime points.");
     return MapDataResponse.points(
         crimeQueryService.getCrimeMapPoints(
-            new CrimeMapPointRequest(minLon, minLat, maxLon, maxLat, zoom, startDate, endDate)));
+            new CrimeMapPointRequest(
+                minLon, minLat, maxLon, maxLat, zoom, startDate, endDate, offenceCategory)));
   }
 }
