@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for app-floral-smoke-8759 on 2026-02-07T23:44:58Z
+# fly.toml app configuration file generated for ottawa-crime-lens-query on 2026-02-07T23:50:21Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'app-floral-smoke-8759'
+app = 'ottawa-crime-lens-query'
 primary_region = 'iad'
 
 [build]
@@ -20,4 +20,4 @@ primary_region = 'iad'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-  memory_mb = 256
+  memory_mb = 1024
