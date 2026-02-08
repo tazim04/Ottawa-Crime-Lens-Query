@@ -11,7 +11,8 @@ public class CorsConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry
         .addMapping("/api/**")
-        .allowedOrigins("http://localhost:5173") // react dev
+        .allowedOrigins(
+            "http://localhost:5173", "https://ottawa-crime-lens-frontend.pages.dev/")
         .allowedMethods("GET")
         .allowCredentials(true);
   }

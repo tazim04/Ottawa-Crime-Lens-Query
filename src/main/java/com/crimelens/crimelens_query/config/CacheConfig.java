@@ -11,7 +11,8 @@ public class CacheConfig {
 
   @Bean
   public CaffeineCacheManager cacheManager() {
-    CaffeineCacheManager manager = new CaffeineCacheManager("gridViewport", "crimeMapPoints", "gridStats");
+    CaffeineCacheManager manager =
+        new CaffeineCacheManager("gridViewport", "crimeMapPoints", "gridStats");
     manager.setCaffeine(
         Caffeine.newBuilder()
             .maximumSize(20_000)
