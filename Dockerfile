@@ -20,6 +20,12 @@ RUN ./mvnw clean package -DskipTests
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
+ENV JAVA_TOOL_OPTIONS="
+  -XX:InitialRAMPercentage=25
+  -XX:MaxRAMPercentage=70
+  -XX:+UseSerialGC
+"
+
 # Copy jar from build stage
 COPY --from=build /app/target/*.jar app.jar
 
