@@ -1,0 +1,19 @@
+services:
+  crimelens-query:
+    build: .
+    container_name: crimelens-query
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+  nginx:
+    image: nginx:latest
+    container_name: crimelens-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
