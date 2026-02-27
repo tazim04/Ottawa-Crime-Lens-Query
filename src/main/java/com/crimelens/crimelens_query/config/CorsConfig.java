@@ -10,9 +10,9 @@ public class CorsConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry
-        .addMapping("/api/**")
+        .addMapping("/**")
         .allowedOrigins(
-            "http://localhost:5173", "https://ottawa-crime-lens-frontend.pages.dev", "https://ottawacrimelens.ca/", "https://www.ottawacrimelens.ca/")
+            "http://localhost:5173", "https://ottawa-crime-lens-frontend.pages.dev", "https://ottawacrimelens.ca", "https://www.ottawacrimelens.ca")
         .allowedMethods("GET")
         .allowCredentials(false);
   }
