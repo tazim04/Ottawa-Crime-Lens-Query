@@ -24,7 +24,8 @@ public class CrimeQueryRepository {
               rs.getString("offenceCategory"),
               rs.getDate("reportedDate").toLocalDate(),
               rs.getDouble("lon"),
-              rs.getDouble("lat"));
+              rs.getDouble("lat"),
+              rs.getObject("gridId", Long.class));
 
   public List<CrimeMapPointProjection> findMapPoints(
       double minLon,
@@ -37,17 +38,18 @@ public class CrimeQueryRepository {
 
     String sql =
         """
-          SELECT id,
-                 offence_category AS offenceCategory,
-                 reported_date AS reportedDate,
-                 ST_X(location) AS lon,
-                 ST_Y(location) AS lat
-          FROM crime_records
-          WHERE location && ST_MakeEnvelope(?, ?, ?, ?, 4326)
-            AND (CAST(? AS date) IS NULL OR reported_date >= CAST(? AS date))
-            AND (CAST(? AS date) IS NULL OR reported_date <= CAST(? AS date))
-            AND (CAST(? AS text) IS NULL OR offence_category = CAST(? AS text))
-          """;
+        SELECT id,
+               offence_category AS offenceCategory,
+               reported_date AS reportedDate,
+               ST_X(location) AS lon,
+             ST_Y(location) AS lat,
+             grid_id AS gridId
+        FROM crime_records
+        WHERE location && ST_MakeEnvelope(?, ?, ?, ?, 4326)
+          AND (CAST(? AS date) IS NULL OR reported_date >= CAST(? AS date))
+          AND (CAST(? AS date) IS NULL OR reported_date <= CAST(? AS date))
+          AND (CAST(? AS text) IS NULL OR offence_category = CAST(? AS text))
+        """;
 
     return jdbc.query(
         sql,
@@ -68,14 +70,14 @@ public class CrimeQueryRepository {
 
     String sql =
         """
-    SELECT id, go_number,
-           occurred_date, occurred_hour,
-           reported_date, reported_hour,
-           offence_summary, offence_category,
-           neighbourhood, intersection, source
-    FROM crime_records
-    WHERE id = ?
-  """;
+          SELECT id, go_number,
+                 occurred_date, occurred_hour,
+                 reported_date, reported_hour,
+                 offence_summary, offence_category,
+                 neighbourhood, intersection, source
+          FROM crime_records
+          WHERE id = ?
+        """;
 
     return jdbc.query(
         sql,

@@ -12,7 +12,10 @@ public class CorsConfig implements WebMvcConfigurer {
     registry
         .addMapping("/**")
         .allowedOrigins(
-            "http://localhost:5173", "https://ottawa-crime-lens-frontend.pages.dev", "https://ottawacrimelens.ca", "https://www.ottawacrimelens.ca")
+            "http://localhost:5173",
+            "https://ottawa-crime-lens-frontend.pages.dev",
+            "https://ottawacrimelens.ca",
+            "https://www.ottawacrimelens.ca")
         .allowedMethods("GET")
         .allowCredentials(false);
   }

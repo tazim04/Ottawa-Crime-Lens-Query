@@ -6,7 +6,11 @@ import com.crimelens.crimelens_query.service.GridStatsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +24,7 @@ public class GridStatsController {
   @GetMapping("/grid/stats")
   public GridStatDTO getGridStats(@Valid @ModelAttribute GridStatsRequest request) {
     log.info("Running /grid/stats");
-    return service.getGridStatsForPoint(request.lon(), request.lat()).orElse(GridStatDTO.EMPTY);
+    return service.getGridStatsForPoint(request.gridId()).orElse(GridStatDTO.EMPTY);
   }
 
   // Fetch grid stats for a specific grid id

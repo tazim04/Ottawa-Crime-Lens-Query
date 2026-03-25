@@ -39,45 +39,42 @@ public class GridStatsRepository {
               rs.getDouble("lat"),
               rs.getLong("total_crimes"));
 
-  public Optional<GridStatProjection> getGridStatsForPoint(double lon, double lat) {
+  public Optional<GridStatProjection> getGridStatsForPoint(long gridId) {
     String sql =
         """
-            SELECT
-                id,
-                total_crimes,
-                avg_crimes_per_year,
-                crimes_last_year,
-                crimes_last_5_years,
-                crimes_last_10_years,
-                most_common_crime_all_time,
-                most_common_crime_last_year,
-                most_common_crime_last_5_years,
-                most_common_crime_last_10_years,
-                first_reported,
-                last_reported
-            FROM crime_stats_grid
-            WHERE grid = ST_SnapToGrid(
-                ST_SetSRID(ST_MakePoint(?, ?), 4326),
-                0.01
-            )
-            LIMIT 1
-            """;
+                SELECT
+                    id,
+                    total_crimes,
+                    avg_crimes_per_year,
+                    crimes_last_year,
+                    crimes_last_5_years,
+                    crimes_last_10_years,
+                    most_common_crime_all_time,
+                    most_common_crime_last_year,
+                    most_common_crime_last_5_years,
+                    most_common_crime_last_10_years,
+                    first_reported,
+                    last_reported
+                FROM crime_stats_grid
+                  WHERE id = ?
+                LIMIT 1
+                """;
 
-    return jdbc.query(sql, GRID_STAT_MAPPER, lon, lat).stream().findFirst();
+    return jdbc.query(sql, GRID_STAT_MAPPER, gridId).stream().findFirst();
   }
 
   public List<GridCellMapProjection> findGridCellsForViewport(
       double minLon, double minLat, double maxLon, double maxLat) {
     String sql =
         """
-      SELECT
-          id,
-          ST_X(grid) AS lon,
-          ST_Y(grid) AS lat,
-          total_crimes
-      FROM crime_stats_grid
-      WHERE grid && ST_MakeEnvelope(?, ?, ?, ?, 4326)
-      """;
+                SELECT
+                    id,
+                    ST_X(grid) AS lon,
+                    ST_Y(grid) AS lat,
+                    total_crimes
+                FROM crime_stats_grid
+                WHERE grid && ST_MakeEnvelope(?, ?, ?, ?, 4326)
+                """;
 
     return jdbc.query(sql, GRID_CELL_MAP_ROW_MAPPER, minLon, minLat, maxLon, maxLat);
   }

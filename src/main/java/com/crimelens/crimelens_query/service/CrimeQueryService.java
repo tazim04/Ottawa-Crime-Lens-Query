@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class CrimeQueryService {
 
   private final CrimeQueryRepository crimeQueryRepository;
-  private final ZoomPolicyService zoomPolicyService;
 
   // Return crime markers for map viewport
   public List<CrimeMapPointDTO> getCrimeMapPoints(CrimeMapPointRequest r) {
@@ -42,7 +41,8 @@ public class CrimeQueryService {
 
   private CrimeMapPointDTO toMapPointDto(CrimeMapPointProjection p) {
 
-    return new CrimeMapPointDTO(p.id(), p.offenceCategory(), p.lat(), p.lon(), p.occurredDate());
+    return new CrimeMapPointDTO(
+        p.id(), p.offenceCategory(), p.lat(), p.lon(), p.occurredDate(), p.gridId());
   }
 
   private CrimeDetailDTO toDetailDto(CrimeDetailProjection p) {

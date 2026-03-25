@@ -19,8 +19,8 @@ public class GridStatsService {
 
   private final GridStatsRepository gridStatsRepository;
 
-  public Optional<GridStatDTO> getGridStatsForPoint(double lon, double lat) {
-    return gridStatsRepository.getGridStatsForPoint(lon, lat).map(this::toDto);
+  public Optional<GridStatDTO> getGridStatsForPoint(long gridId) {
+    return gridStatsRepository.getGridStatsForPoint(gridId).map(this::toDto);
   }
 
   @Cacheable(value = "gridStats", key = "'grid:' + #id")
