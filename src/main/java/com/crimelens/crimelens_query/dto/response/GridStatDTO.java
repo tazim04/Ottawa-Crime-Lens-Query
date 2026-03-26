@@ -15,8 +15,9 @@ public record GridStatDTO(
     String mostCommonCrimeLast10Years,
     LocalDate firstReported,
     LocalDate lastReported,
+    GridAnomalyDTO anomaly,
     boolean empty) {
 
   public static final GridStatDTO EMPTY =
-      new GridStatDTO(-1, 0, 0.0, 0, 0, 0, null, null, null, null, null, null, true);
+      new GridStatDTO(-1, 0, 0.0, 0, 0, 0, null, null, null, null, null, null, null, true);
 }

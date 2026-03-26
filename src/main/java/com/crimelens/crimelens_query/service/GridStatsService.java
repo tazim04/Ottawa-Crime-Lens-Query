@@ -1,8 +1,11 @@
 package com.crimelens.crimelens_query.service;
 
+import com.crimelens.crimelens_query.dto.response.GridAnomalyDTO;
 import com.crimelens.crimelens_query.dto.response.GridCellDTO;
 import com.crimelens.crimelens_query.dto.response.GridStatDTO;
+import com.crimelens.crimelens_query.repository.GridAnomalyRepository;
 import com.crimelens.crimelens_query.repository.GridStatsRepository;
+import com.crimelens.crimelens_query.repository.projection.GridAnomalyProjection;
 import com.crimelens.crimelens_query.repository.projection.GridCellMapProjection;
 import com.crimelens.crimelens_query.repository.projection.GridStatProjection;
 import java.util.List;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class GridStatsService {
 
   private final GridStatsRepository gridStatsRepository;
+  private final GridAnomalyRepository gridAnomalyRepository;
 
   public Optional<GridStatDTO> getGridStatsForPoint(long gridId) {
     return gridStatsRepository.getGridStatsForPoint(gridId).map(this::toDto);
@@ -60,7 +64,18 @@ public class GridStatsService {
         projection.mostCommonCrimeLast10Years(),
         projection.firstReported(),
         projection.lastReported(),
+        gridAnomalyRepository.findByGridId(projection.id()).map(this::toAnomalyDto).orElse(null),
         false);
+  }
+
+  private GridAnomalyDTO toAnomalyDto(GridAnomalyProjection projection) {
+    return new GridAnomalyDTO(
+        projection.date(),
+        projection.anomalyScore(),
+        projection.modelVersion(),
+        projection.triagePercentile(),
+        projection.triageLabel(),
+        projection.triageExplanation());
   }
 
   private GridCellDTO toDto(GridCellMapProjection projection) {
